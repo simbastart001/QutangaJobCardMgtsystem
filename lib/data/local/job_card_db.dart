@@ -3,6 +3,8 @@ import 'package:drift/native.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 import 'dart:io';
+import 'package:sqlite3/sqlite3.dart';
+import 'package:sqlite3_flutter_libs/sqlite3_flutter_libs.dart';
 
 part 'job_card_db.g.dart';
 
@@ -44,8 +46,26 @@ class AppDatabase extends _$AppDatabase {
 
 LazyDatabase _openConnection() {
   return LazyDatabase(() async {
-    final dir = await getApplicationDocumentsDirectory();
-    final path = p.join(dir.path, 'job_cards.sqlite');
-    return NativeDatabase(File(path));
+    // First, try to load the sqlite3 library
+    try {
+      // This ensures that the sqlite3 library is properly loaded
+      await applyWorkaroundToOpenSqlite3OnOldAndroidVersions();
+
+      // This line prints SQLite version to verify it's loaded successfully
+      final sqliteVersion = sqlite3.version;
+      print('***** SQLite version: $sqliteVersion');
+    } catch (e) {
+      print('***** Error initializing SQLite: $e');
+    }
+
+    // Get a location for the database file
+    final dbFolder = await getApplicationDocumentsDirectory();
+    final file = File(p.join(dbFolder.path, 'job_cards.sqlite'));
+
+    return NativeDatabase(
+      file,
+      // Enable foreign keys if needed
+      setup: (db) => db.execute('PRAGMA foreign_keys = ON'),
+    );
   });
 }
