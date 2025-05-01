@@ -91,7 +91,7 @@ class _JobCardCreationScreenState extends ConsumerState<JobCardCreationScreen> {
         });
 
         // Switch to the "Reports" tab (index 4)
-        ref.read(navigationIndexProvider.notifier).state = 4;
+        ref.read(navigationIndexProvider.notifier).state = 3;
       } catch (e) {
         if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
