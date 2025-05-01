@@ -9,6 +9,7 @@ import 'package:qutanga_app/features/reports/presentation/reports_screen.dart';
 import 'package:qutanga_app/main.dart';
 
 import '../../../data/local/job_card_db.dart';
+import '../../navigation/navigation_controller.dart';
 
 class JobCardCreationScreen extends ConsumerStatefulWidget {
   const JobCardCreationScreen({super.key});
@@ -53,10 +54,7 @@ class _JobCardCreationScreenState extends ConsumerState<JobCardCreationScreen> {
   }
 
   Future<void> _submit() async {
-    debugPrint('***** Submit button pressed');
     final isValid = _formKey.currentState!.validate();
-    debugPrint('***** Form valid: $isValid');
-    debugPrint('***** Selected Date: $_selectedDate');
 
     if (isValid && _selectedDate != null) {
       // Get the database from the provider
@@ -71,19 +69,14 @@ class _JobCardCreationScreenState extends ConsumerState<JobCardCreationScreen> {
         status: const drift.Value("Pending"),
       );
 
-      debugPrint('***** Prepared JobCard for insertion: $jobCard');
-
       try {
         await db.insertJobCard(jobCard);
-        debugPrint('***** JobCard inserted successfully');
-
         if (!mounted) {
-          debugPrint('***** Context is not mounted. Aborting navigation.');
           return;
         }
 
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('***** Job Card Created!')),
+          const SnackBar(content: Text('Job Card Created!')),
         );
 
         // Clear form
@@ -97,22 +90,15 @@ class _JobCardCreationScreenState extends ConsumerState<JobCardCreationScreen> {
           _selectedDate = null;
         });
 
-        debugPrint('***** Navigating to ReportsScreen');
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (e) => const AdminApprovalScreen(),
-          ),
-        );
+        // Switch to the "Reports" tab (index 4)
+        ref.read(navigationIndexProvider.notifier).state = 4;
       } catch (e) {
-        debugPrint('***** Error inserting JobCard: $e');
         if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('***** Error saving job card: $e')),
+          SnackBar(content: Text('Error saving job card: $e')),
         );
       }
     } else {
-      debugPrint('***** Validation failed or date not selected');
       if (_selectedDate == null) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -125,8 +111,10 @@ class _JobCardCreationScreenState extends ConsumerState<JobCardCreationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[100],
       appBar: AppBar(
         title: const Text('Create Job Card'),
+        centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

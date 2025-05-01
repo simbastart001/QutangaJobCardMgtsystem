@@ -10,7 +10,6 @@ class AdminApprovalScreen extends StatefulWidget {
 
 class _AdminApprovalScreenState extends State<AdminApprovalScreen> {
   final _db = AppDatabase();
-
   late Future<List<JobCard>> _jobCardsFuture;
 
   @override
@@ -51,21 +50,85 @@ class _AdminApprovalScreenState extends State<AdminApprovalScreen> {
     }
   }
 
+  Color _getStatusColor(String status) {
+    switch (status.toLowerCase()) {
+      case 'approved':
+        return Colors.green.shade100;
+      case 'rejected':
+        return Colors.red.shade100;
+      case 'pending':
+        return Colors.yellow.shade100;
+      default:
+        return Colors.grey.shade100;
+    }
+  }
+
+  IconData _getStatusIcon(String status) {
+    switch (status.toLowerCase()) {
+      case 'approved':
+        return Icons.check_circle;
+      case 'rejected':
+        return Icons.cancel;
+      case 'pending':
+        return Icons.hourglass_top;
+      default:
+        return Icons.help_outline;
+    }
+  }
+
+  Color _getStatusBadgeColor(String status) {
+    switch (status.toLowerCase()) {
+      case 'approved':
+        return Colors.green;
+      case 'rejected':
+        return Colors.red;
+      case 'pending':
+        return Colors.orange;
+      default:
+        return Colors.grey;
+    }
+  }
+
   Widget _buildCard(JobCard card) {
     return Card(
+      color: _getStatusColor(card.status),
+      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       child: ListTile(
-        title: Text(card.title),
+        leading: Icon(
+          _getStatusIcon(card.status),
+          color: _getStatusBadgeColor(card.status),
+          size: 32,
+        ),
+        title: Text(card.title,
+            style: const TextStyle(fontWeight: FontWeight.bold)),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const SizedBox(height: 4),
             Text('Client: ${card.clientName}'),
             Text('Technician: ${card.technician}'),
-            Text('Status: ${card.status}'),
-            if (card.adminComment != null)
-              Text('Comment: ${card.adminComment}'),
+            const SizedBox(height: 4),
+            Row(
+              children: [
+                Chip(
+                  label: Text(card.status),
+                  backgroundColor:
+                      _getStatusBadgeColor(card.status).withOpacity(0.2),
+                  labelStyle: TextStyle(
+                    color: _getStatusBadgeColor(card.status),
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            if (card.adminComment != null && card.adminComment!.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(top: 4),
+                child: Text('Comment: ${card.adminComment}'),
+              ),
           ],
         ),
-        trailing: card.status == 'Pending'
+        trailing: card.status.toLowerCase() == 'pending'
             ? Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -87,7 +150,8 @@ class _AdminApprovalScreenState extends State<AdminApprovalScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Admin Approval")),
+      backgroundColor: Colors.grey[100],
+      appBar: AppBar(title: const Text("Admin Approval"), centerTitle: true),
       body: FutureBuilder<List<JobCard>>(
         future: _jobCardsFuture,
         builder: (context, snapshot) {
@@ -98,6 +162,10 @@ class _AdminApprovalScreenState extends State<AdminApprovalScreen> {
           }
 
           final cards = snapshot.data ?? [];
+          if (cards.isEmpty) {
+            return const Center(child: Text('No Job Cards found.'));
+          }
+
           return ListView.builder(
             itemCount: cards.length,
             itemBuilder: (_, i) => _buildCard(cards[i]),
