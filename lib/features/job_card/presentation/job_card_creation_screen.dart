@@ -57,56 +57,118 @@ class _JobCardCreationScreenState extends ConsumerState<JobCardCreationScreen> {
     final isValid = _formKey.currentState!.validate();
 
     if (isValid && _selectedDate != null) {
-      // Get the database from the provider
       final db = ref.read(databaseProvider);
 
       final jobCard = JobCardsCompanion(
-        title: drift.Value(_titleController.text),
-        clientName: drift.Value(_clientController.text),
-        description: drift.Value(_descController.text),
-        technician: drift.Value(_techController.text),
-        estimatedDate: drift.Value(_selectedDate!),
+        title: drift.Value(_titleController.text.trim()),
+        clientname: drift.Value(_clientController.text.trim()),
+        description: drift.Value(_descController.text.trim()),
+        technician: drift.Value(_techController.text.trim()),
+        estimateddate: drift.Value(_selectedDate!),
         status: const drift.Value("Pending"),
+        admincomment: const drift.Value.absent(),
+        // ✅ Let DB handle default/null
+        synced: const drift.Value(false),
       );
 
       try {
+        debugPrint("===== Inserting JobCard: $jobCard");
+        debugPrint("===== Attempting to insert job card with data:");
         await db.insertJobCard(jobCard);
-        if (!mounted) {
-          return;
-        }
+
+        if (!mounted) return;
 
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Job Card Created!')),
         );
 
-        // Clear form
         _formKey.currentState!.reset();
         _titleController.clear();
         _clientController.clear();
         _descController.clear();
         _techController.clear();
         _dateController.clear();
+
         setState(() {
           _selectedDate = null;
         });
 
-        // Switch to the "Reports" tab (index 4)
         ref.read(navigationIndexProvider.notifier).state = 3;
-      } catch (e) {
+      } catch (e, stackTrace) {
+        debugPrint("===== Unexpected error occurred: $e");
+        debugPrint("===== StackTrace: $stackTrace");
+
         if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error saving job card: $e')),
+          SnackBar(content: Text('Error saving job card: ${e.toString()}')),
         );
       }
     } else {
       if (_selectedDate == null) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-              content: Text('Please select an estimated completion date')),
+            content: Text('Please select an estimated completion date'),
+          ),
         );
       }
     }
   }
+
+  // Future<void> _submit() async {
+  //   final isValid = _formKey.currentState!.validate();
+  //
+  //   if (isValid && _selectedDate != null) {
+  //     // Get the database from the provider
+  //     final db = ref.read(databaseProvider);
+  //
+  //     final jobCard = JobCardsCompanion(
+  //         title: drift.Value(_titleController.text),
+  //         clientname: drift.Value(_clientController.text),
+  //         description: drift.Value(_descController.text),
+  //         technician: drift.Value(_techController.text),
+  //         estimateddate: drift.Value(_selectedDate!),
+  //         status: const drift.Value("Pending"),
+  //         synced: drift.Value(false));
+  //
+  //     try {
+  //       await db.insertJobCard(jobCard);
+  //       if (!mounted) {
+  //         return;
+  //       }
+  //
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         const SnackBar(content: Text('Job Card Created!')),
+  //       );
+  //
+  //       // Clear form
+  //       _formKey.currentState!.reset();
+  //       _titleController.clear();
+  //       _clientController.clear();
+  //       _descController.clear();
+  //       _techController.clear();
+  //       _dateController.clear();
+  //       setState(() {
+  //         _selectedDate = null;
+  //       });
+  //
+  //       // Switch to the "Reports" tab (index 4)
+  //       ref.read(navigationIndexProvider.notifier).state = 3;
+  //     } catch (e) {
+  //       if (!mounted) return;
+  //       debugPrint("=====  Error saving job card: $e");
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         SnackBar(content: Text('Error saving job card: $e')),
+  //       );
+  //     }
+  //   } else {
+  //     if (_selectedDate == null) {
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         const SnackBar(
+  //             content: Text('Please select an estimated completion date')),
+  //       );
+  //     }
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {

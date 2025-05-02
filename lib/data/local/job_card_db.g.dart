@@ -8,10 +8,10 @@ class $JobCardsTable extends JobCards with TableInfo<$JobCardsTable, JobCard> {
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $JobCardsTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  static const VerificationMeta _jobidMeta = const VerificationMeta('jobid');
   @override
-  late final GeneratedColumn<int> id = GeneratedColumn<int>(
-      'id', aliasedName, false,
+  late final GeneratedColumn<int> jobid = GeneratedColumn<int>(
+      'jobid', aliasedName, false,
       hasAutoIncrement: true,
       type: DriftSqlType.int,
       requiredDuringInsert: false,
@@ -22,11 +22,11 @@ class $JobCardsTable extends JobCards with TableInfo<$JobCardsTable, JobCard> {
   late final GeneratedColumn<String> title = GeneratedColumn<String>(
       'title', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _clientNameMeta =
-      const VerificationMeta('clientName');
+  static const VerificationMeta _clientnameMeta =
+      const VerificationMeta('clientname');
   @override
-  late final GeneratedColumn<String> clientName = GeneratedColumn<String>(
-      'client_name', aliasedName, false,
+  late final GeneratedColumn<String> clientname = GeneratedColumn<String>(
+      'clientname', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
   static const VerificationMeta _descriptionMeta =
       const VerificationMeta('description');
@@ -40,11 +40,11 @@ class $JobCardsTable extends JobCards with TableInfo<$JobCardsTable, JobCard> {
   late final GeneratedColumn<String> technician = GeneratedColumn<String>(
       'technician', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _estimatedDateMeta =
-      const VerificationMeta('estimatedDate');
+  static const VerificationMeta _estimateddateMeta =
+      const VerificationMeta('estimateddate');
   @override
-  late final GeneratedColumn<DateTime> estimatedDate =
-      GeneratedColumn<DateTime>('estimated_date', aliasedName, false,
+  late final GeneratedColumn<DateTime> estimateddate =
+      GeneratedColumn<DateTime>('estimateddate', aliasedName, false,
           type: DriftSqlType.dateTime, requiredDuringInsert: true);
   static const VerificationMeta _statusMeta = const VerificationMeta('status');
   @override
@@ -53,22 +53,32 @@ class $JobCardsTable extends JobCards with TableInfo<$JobCardsTable, JobCard> {
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       defaultValue: const Constant('Pending'));
-  static const VerificationMeta _adminCommentMeta =
-      const VerificationMeta('adminComment');
+  static const VerificationMeta _admincommentMeta =
+      const VerificationMeta('admincomment');
   @override
-  late final GeneratedColumn<String> adminComment = GeneratedColumn<String>(
-      'admin_comment', aliasedName, true,
+  late final GeneratedColumn<String> admincomment = GeneratedColumn<String>(
+      'admincomment', aliasedName, true,
       type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _syncedMeta = const VerificationMeta('synced');
+  @override
+  late final GeneratedColumn<bool> synced = GeneratedColumn<bool>(
+      'synced', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("synced" IN (0, 1))'),
+      defaultValue: const Constant(false));
   @override
   List<GeneratedColumn> get $columns => [
-        id,
+        jobid,
         title,
-        clientName,
+        clientname,
         description,
         technician,
-        estimatedDate,
+        estimateddate,
         status,
-        adminComment
+        admincomment,
+        synced
       ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -80,8 +90,9 @@ class $JobCardsTable extends JobCards with TableInfo<$JobCardsTable, JobCard> {
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
-    if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    if (data.containsKey('jobid')) {
+      context.handle(
+          _jobidMeta, jobid.isAcceptableOrUnknown(data['jobid']!, _jobidMeta));
     }
     if (data.containsKey('title')) {
       context.handle(
@@ -89,13 +100,13 @@ class $JobCardsTable extends JobCards with TableInfo<$JobCardsTable, JobCard> {
     } else if (isInserting) {
       context.missing(_titleMeta);
     }
-    if (data.containsKey('client_name')) {
+    if (data.containsKey('clientname')) {
       context.handle(
-          _clientNameMeta,
-          clientName.isAcceptableOrUnknown(
-              data['client_name']!, _clientNameMeta));
+          _clientnameMeta,
+          clientname.isAcceptableOrUnknown(
+              data['clientname']!, _clientnameMeta));
     } else if (isInserting) {
-      context.missing(_clientNameMeta);
+      context.missing(_clientnameMeta);
     }
     if (data.containsKey('description')) {
       context.handle(
@@ -113,49 +124,55 @@ class $JobCardsTable extends JobCards with TableInfo<$JobCardsTable, JobCard> {
     } else if (isInserting) {
       context.missing(_technicianMeta);
     }
-    if (data.containsKey('estimated_date')) {
+    if (data.containsKey('estimateddate')) {
       context.handle(
-          _estimatedDateMeta,
-          estimatedDate.isAcceptableOrUnknown(
-              data['estimated_date']!, _estimatedDateMeta));
+          _estimateddateMeta,
+          estimateddate.isAcceptableOrUnknown(
+              data['estimateddate']!, _estimateddateMeta));
     } else if (isInserting) {
-      context.missing(_estimatedDateMeta);
+      context.missing(_estimateddateMeta);
     }
     if (data.containsKey('status')) {
       context.handle(_statusMeta,
           status.isAcceptableOrUnknown(data['status']!, _statusMeta));
     }
-    if (data.containsKey('admin_comment')) {
+    if (data.containsKey('admincomment')) {
       context.handle(
-          _adminCommentMeta,
-          adminComment.isAcceptableOrUnknown(
-              data['admin_comment']!, _adminCommentMeta));
+          _admincommentMeta,
+          admincomment.isAcceptableOrUnknown(
+              data['admincomment']!, _admincommentMeta));
+    }
+    if (data.containsKey('synced')) {
+      context.handle(_syncedMeta,
+          synced.isAcceptableOrUnknown(data['synced']!, _syncedMeta));
     }
     return context;
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {id};
+  Set<GeneratedColumn> get $primaryKey => {jobid};
   @override
   JobCard map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return JobCard(
-      id: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      jobid: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}jobid'])!,
       title: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}title'])!,
-      clientName: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}client_name'])!,
+      clientname: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}clientname'])!,
       description: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}description'])!,
       technician: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}technician'])!,
-      estimatedDate: attachedDatabase.typeMapping.read(
-          DriftSqlType.dateTime, data['${effectivePrefix}estimated_date'])!,
+      estimateddate: attachedDatabase.typeMapping.read(
+          DriftSqlType.dateTime, data['${effectivePrefix}estimateddate'])!,
       status: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}status'])!,
-      adminComment: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}admin_comment']),
+      admincomment: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}admincomment']),
+      synced: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}synced'])!,
     );
   }
 
@@ -166,51 +183,55 @@ class $JobCardsTable extends JobCards with TableInfo<$JobCardsTable, JobCard> {
 }
 
 class JobCard extends DataClass implements Insertable<JobCard> {
-  final int id;
+  final int jobid;
   final String title;
-  final String clientName;
+  final String clientname;
   final String description;
   final String technician;
-  final DateTime estimatedDate;
+  final DateTime estimateddate;
   final String status;
-  final String? adminComment;
+  final String? admincomment;
+  final bool synced;
   const JobCard(
-      {required this.id,
+      {required this.jobid,
       required this.title,
-      required this.clientName,
+      required this.clientname,
       required this.description,
       required this.technician,
-      required this.estimatedDate,
+      required this.estimateddate,
       required this.status,
-      this.adminComment});
+      this.admincomment,
+      required this.synced});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    map['id'] = Variable<int>(id);
+    map['jobid'] = Variable<int>(jobid);
     map['title'] = Variable<String>(title);
-    map['client_name'] = Variable<String>(clientName);
+    map['clientname'] = Variable<String>(clientname);
     map['description'] = Variable<String>(description);
     map['technician'] = Variable<String>(technician);
-    map['estimated_date'] = Variable<DateTime>(estimatedDate);
+    map['estimateddate'] = Variable<DateTime>(estimateddate);
     map['status'] = Variable<String>(status);
-    if (!nullToAbsent || adminComment != null) {
-      map['admin_comment'] = Variable<String>(adminComment);
+    if (!nullToAbsent || admincomment != null) {
+      map['admincomment'] = Variable<String>(admincomment);
     }
+    map['synced'] = Variable<bool>(synced);
     return map;
   }
 
   JobCardsCompanion toCompanion(bool nullToAbsent) {
     return JobCardsCompanion(
-      id: Value(id),
+      jobid: Value(jobid),
       title: Value(title),
-      clientName: Value(clientName),
+      clientname: Value(clientname),
       description: Value(description),
       technician: Value(technician),
-      estimatedDate: Value(estimatedDate),
+      estimateddate: Value(estimateddate),
       status: Value(status),
-      adminComment: adminComment == null && nullToAbsent
+      admincomment: admincomment == null && nullToAbsent
           ? const Value.absent()
-          : Value(adminComment),
+          : Value(admincomment),
+      synced: Value(synced),
     );
   }
 
@@ -218,190 +239,204 @@ class JobCard extends DataClass implements Insertable<JobCard> {
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return JobCard(
-      id: serializer.fromJson<int>(json['id']),
+      jobid: serializer.fromJson<int>(json['jobid']),
       title: serializer.fromJson<String>(json['title']),
-      clientName: serializer.fromJson<String>(json['clientName']),
+      clientname: serializer.fromJson<String>(json['clientname']),
       description: serializer.fromJson<String>(json['description']),
       technician: serializer.fromJson<String>(json['technician']),
-      estimatedDate: serializer.fromJson<DateTime>(json['estimatedDate']),
+      estimateddate: serializer.fromJson<DateTime>(json['estimateddate']),
       status: serializer.fromJson<String>(json['status']),
-      adminComment: serializer.fromJson<String?>(json['adminComment']),
+      admincomment: serializer.fromJson<String?>(json['admincomment']),
+      synced: serializer.fromJson<bool>(json['synced']),
     );
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'id': serializer.toJson<int>(id),
+      'jobid': serializer.toJson<int>(jobid),
       'title': serializer.toJson<String>(title),
-      'clientName': serializer.toJson<String>(clientName),
+      'clientname': serializer.toJson<String>(clientname),
       'description': serializer.toJson<String>(description),
       'technician': serializer.toJson<String>(technician),
-      'estimatedDate': serializer.toJson<DateTime>(estimatedDate),
+      'estimateddate': serializer.toJson<DateTime>(estimateddate),
       'status': serializer.toJson<String>(status),
-      'adminComment': serializer.toJson<String?>(adminComment),
+      'admincomment': serializer.toJson<String?>(admincomment),
+      'synced': serializer.toJson<bool>(synced),
     };
   }
 
   JobCard copyWith(
-          {int? id,
+          {int? jobid,
           String? title,
-          String? clientName,
+          String? clientname,
           String? description,
           String? technician,
-          DateTime? estimatedDate,
+          DateTime? estimateddate,
           String? status,
-          Value<String?> adminComment = const Value.absent()}) =>
+          Value<String?> admincomment = const Value.absent(),
+          bool? synced}) =>
       JobCard(
-        id: id ?? this.id,
+        jobid: jobid ?? this.jobid,
         title: title ?? this.title,
-        clientName: clientName ?? this.clientName,
+        clientname: clientname ?? this.clientname,
         description: description ?? this.description,
         technician: technician ?? this.technician,
-        estimatedDate: estimatedDate ?? this.estimatedDate,
+        estimateddate: estimateddate ?? this.estimateddate,
         status: status ?? this.status,
-        adminComment:
-            adminComment.present ? adminComment.value : this.adminComment,
+        admincomment:
+            admincomment.present ? admincomment.value : this.admincomment,
+        synced: synced ?? this.synced,
       );
   JobCard copyWithCompanion(JobCardsCompanion data) {
     return JobCard(
-      id: data.id.present ? data.id.value : this.id,
+      jobid: data.jobid.present ? data.jobid.value : this.jobid,
       title: data.title.present ? data.title.value : this.title,
-      clientName:
-          data.clientName.present ? data.clientName.value : this.clientName,
+      clientname:
+          data.clientname.present ? data.clientname.value : this.clientname,
       description:
           data.description.present ? data.description.value : this.description,
       technician:
           data.technician.present ? data.technician.value : this.technician,
-      estimatedDate: data.estimatedDate.present
-          ? data.estimatedDate.value
-          : this.estimatedDate,
+      estimateddate: data.estimateddate.present
+          ? data.estimateddate.value
+          : this.estimateddate,
       status: data.status.present ? data.status.value : this.status,
-      adminComment: data.adminComment.present
-          ? data.adminComment.value
-          : this.adminComment,
+      admincomment: data.admincomment.present
+          ? data.admincomment.value
+          : this.admincomment,
+      synced: data.synced.present ? data.synced.value : this.synced,
     );
   }
 
   @override
   String toString() {
     return (StringBuffer('JobCard(')
-          ..write('id: $id, ')
+          ..write('jobid: $jobid, ')
           ..write('title: $title, ')
-          ..write('clientName: $clientName, ')
+          ..write('clientname: $clientname, ')
           ..write('description: $description, ')
           ..write('technician: $technician, ')
-          ..write('estimatedDate: $estimatedDate, ')
+          ..write('estimateddate: $estimateddate, ')
           ..write('status: $status, ')
-          ..write('adminComment: $adminComment')
+          ..write('admincomment: $admincomment, ')
+          ..write('synced: $synced')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, title, clientName, description,
-      technician, estimatedDate, status, adminComment);
+  int get hashCode => Object.hash(jobid, title, clientname, description,
+      technician, estimateddate, status, admincomment, synced);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is JobCard &&
-          other.id == this.id &&
+          other.jobid == this.jobid &&
           other.title == this.title &&
-          other.clientName == this.clientName &&
+          other.clientname == this.clientname &&
           other.description == this.description &&
           other.technician == this.technician &&
-          other.estimatedDate == this.estimatedDate &&
+          other.estimateddate == this.estimateddate &&
           other.status == this.status &&
-          other.adminComment == this.adminComment);
+          other.admincomment == this.admincomment &&
+          other.synced == this.synced);
 }
 
 class JobCardsCompanion extends UpdateCompanion<JobCard> {
-  final Value<int> id;
+  final Value<int> jobid;
   final Value<String> title;
-  final Value<String> clientName;
+  final Value<String> clientname;
   final Value<String> description;
   final Value<String> technician;
-  final Value<DateTime> estimatedDate;
+  final Value<DateTime> estimateddate;
   final Value<String> status;
-  final Value<String?> adminComment;
+  final Value<String?> admincomment;
+  final Value<bool> synced;
   const JobCardsCompanion({
-    this.id = const Value.absent(),
+    this.jobid = const Value.absent(),
     this.title = const Value.absent(),
-    this.clientName = const Value.absent(),
+    this.clientname = const Value.absent(),
     this.description = const Value.absent(),
     this.technician = const Value.absent(),
-    this.estimatedDate = const Value.absent(),
+    this.estimateddate = const Value.absent(),
     this.status = const Value.absent(),
-    this.adminComment = const Value.absent(),
+    this.admincomment = const Value.absent(),
+    this.synced = const Value.absent(),
   });
   JobCardsCompanion.insert({
-    this.id = const Value.absent(),
+    this.jobid = const Value.absent(),
     required String title,
-    required String clientName,
+    required String clientname,
     required String description,
     required String technician,
-    required DateTime estimatedDate,
+    required DateTime estimateddate,
     this.status = const Value.absent(),
-    this.adminComment = const Value.absent(),
+    this.admincomment = const Value.absent(),
+    this.synced = const Value.absent(),
   })  : title = Value(title),
-        clientName = Value(clientName),
+        clientname = Value(clientname),
         description = Value(description),
         technician = Value(technician),
-        estimatedDate = Value(estimatedDate);
+        estimateddate = Value(estimateddate);
   static Insertable<JobCard> custom({
-    Expression<int>? id,
+    Expression<int>? jobid,
     Expression<String>? title,
-    Expression<String>? clientName,
+    Expression<String>? clientname,
     Expression<String>? description,
     Expression<String>? technician,
-    Expression<DateTime>? estimatedDate,
+    Expression<DateTime>? estimateddate,
     Expression<String>? status,
-    Expression<String>? adminComment,
+    Expression<String>? admincomment,
+    Expression<bool>? synced,
   }) {
     return RawValuesInsertable({
-      if (id != null) 'id': id,
+      if (jobid != null) 'jobid': jobid,
       if (title != null) 'title': title,
-      if (clientName != null) 'client_name': clientName,
+      if (clientname != null) 'clientname': clientname,
       if (description != null) 'description': description,
       if (technician != null) 'technician': technician,
-      if (estimatedDate != null) 'estimated_date': estimatedDate,
+      if (estimateddate != null) 'estimateddate': estimateddate,
       if (status != null) 'status': status,
-      if (adminComment != null) 'admin_comment': adminComment,
+      if (admincomment != null) 'admincomment': admincomment,
+      if (synced != null) 'synced': synced,
     });
   }
 
   JobCardsCompanion copyWith(
-      {Value<int>? id,
+      {Value<int>? jobid,
       Value<String>? title,
-      Value<String>? clientName,
+      Value<String>? clientname,
       Value<String>? description,
       Value<String>? technician,
-      Value<DateTime>? estimatedDate,
+      Value<DateTime>? estimateddate,
       Value<String>? status,
-      Value<String?>? adminComment}) {
+      Value<String?>? admincomment,
+      Value<bool>? synced}) {
     return JobCardsCompanion(
-      id: id ?? this.id,
+      jobid: jobid ?? this.jobid,
       title: title ?? this.title,
-      clientName: clientName ?? this.clientName,
+      clientname: clientname ?? this.clientname,
       description: description ?? this.description,
       technician: technician ?? this.technician,
-      estimatedDate: estimatedDate ?? this.estimatedDate,
+      estimateddate: estimateddate ?? this.estimateddate,
       status: status ?? this.status,
-      adminComment: adminComment ?? this.adminComment,
+      admincomment: admincomment ?? this.admincomment,
+      synced: synced ?? this.synced,
     );
   }
 
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (id.present) {
-      map['id'] = Variable<int>(id.value);
+    if (jobid.present) {
+      map['jobid'] = Variable<int>(jobid.value);
     }
     if (title.present) {
       map['title'] = Variable<String>(title.value);
     }
-    if (clientName.present) {
-      map['client_name'] = Variable<String>(clientName.value);
+    if (clientname.present) {
+      map['clientname'] = Variable<String>(clientname.value);
     }
     if (description.present) {
       map['description'] = Variable<String>(description.value);
@@ -409,14 +444,17 @@ class JobCardsCompanion extends UpdateCompanion<JobCard> {
     if (technician.present) {
       map['technician'] = Variable<String>(technician.value);
     }
-    if (estimatedDate.present) {
-      map['estimated_date'] = Variable<DateTime>(estimatedDate.value);
+    if (estimateddate.present) {
+      map['estimateddate'] = Variable<DateTime>(estimateddate.value);
     }
     if (status.present) {
       map['status'] = Variable<String>(status.value);
     }
-    if (adminComment.present) {
-      map['admin_comment'] = Variable<String>(adminComment.value);
+    if (admincomment.present) {
+      map['admincomment'] = Variable<String>(admincomment.value);
+    }
+    if (synced.present) {
+      map['synced'] = Variable<bool>(synced.value);
     }
     return map;
   }
@@ -424,14 +462,15 @@ class JobCardsCompanion extends UpdateCompanion<JobCard> {
   @override
   String toString() {
     return (StringBuffer('JobCardsCompanion(')
-          ..write('id: $id, ')
+          ..write('jobid: $jobid, ')
           ..write('title: $title, ')
-          ..write('clientName: $clientName, ')
+          ..write('clientname: $clientname, ')
           ..write('description: $description, ')
           ..write('technician: $technician, ')
-          ..write('estimatedDate: $estimatedDate, ')
+          ..write('estimateddate: $estimateddate, ')
           ..write('status: $status, ')
-          ..write('adminComment: $adminComment')
+          ..write('admincomment: $admincomment, ')
+          ..write('synced: $synced')
           ..write(')'))
         .toString();
   }
@@ -449,24 +488,26 @@ abstract class _$AppDatabase extends GeneratedDatabase {
 }
 
 typedef $$JobCardsTableCreateCompanionBuilder = JobCardsCompanion Function({
-  Value<int> id,
+  Value<int> jobid,
   required String title,
-  required String clientName,
+  required String clientname,
   required String description,
   required String technician,
-  required DateTime estimatedDate,
+  required DateTime estimateddate,
   Value<String> status,
-  Value<String?> adminComment,
+  Value<String?> admincomment,
+  Value<bool> synced,
 });
 typedef $$JobCardsTableUpdateCompanionBuilder = JobCardsCompanion Function({
-  Value<int> id,
+  Value<int> jobid,
   Value<String> title,
-  Value<String> clientName,
+  Value<String> clientname,
   Value<String> description,
   Value<String> technician,
-  Value<DateTime> estimatedDate,
+  Value<DateTime> estimateddate,
   Value<String> status,
-  Value<String?> adminComment,
+  Value<String?> admincomment,
+  Value<bool> synced,
 });
 
 class $$JobCardsTableFilterComposer
@@ -478,14 +519,14 @@ class $$JobCardsTableFilterComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  ColumnFilters<int> get id => $composableBuilder(
-      column: $table.id, builder: (column) => ColumnFilters(column));
+  ColumnFilters<int> get jobid => $composableBuilder(
+      column: $table.jobid, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<String> get title => $composableBuilder(
       column: $table.title, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get clientName => $composableBuilder(
-      column: $table.clientName, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get clientname => $composableBuilder(
+      column: $table.clientname, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<String> get description => $composableBuilder(
       column: $table.description, builder: (column) => ColumnFilters(column));
@@ -493,14 +534,17 @@ class $$JobCardsTableFilterComposer
   ColumnFilters<String> get technician => $composableBuilder(
       column: $table.technician, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<DateTime> get estimatedDate => $composableBuilder(
-      column: $table.estimatedDate, builder: (column) => ColumnFilters(column));
+  ColumnFilters<DateTime> get estimateddate => $composableBuilder(
+      column: $table.estimateddate, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<String> get status => $composableBuilder(
       column: $table.status, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get adminComment => $composableBuilder(
-      column: $table.adminComment, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get admincomment => $composableBuilder(
+      column: $table.admincomment, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<bool> get synced => $composableBuilder(
+      column: $table.synced, builder: (column) => ColumnFilters(column));
 }
 
 class $$JobCardsTableOrderingComposer
@@ -512,14 +556,14 @@ class $$JobCardsTableOrderingComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  ColumnOrderings<int> get id => $composableBuilder(
-      column: $table.id, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<int> get jobid => $composableBuilder(
+      column: $table.jobid, builder: (column) => ColumnOrderings(column));
 
   ColumnOrderings<String> get title => $composableBuilder(
       column: $table.title, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get clientName => $composableBuilder(
-      column: $table.clientName, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get clientname => $composableBuilder(
+      column: $table.clientname, builder: (column) => ColumnOrderings(column));
 
   ColumnOrderings<String> get description => $composableBuilder(
       column: $table.description, builder: (column) => ColumnOrderings(column));
@@ -527,16 +571,19 @@ class $$JobCardsTableOrderingComposer
   ColumnOrderings<String> get technician => $composableBuilder(
       column: $table.technician, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<DateTime> get estimatedDate => $composableBuilder(
-      column: $table.estimatedDate,
+  ColumnOrderings<DateTime> get estimateddate => $composableBuilder(
+      column: $table.estimateddate,
       builder: (column) => ColumnOrderings(column));
 
   ColumnOrderings<String> get status => $composableBuilder(
       column: $table.status, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get adminComment => $composableBuilder(
-      column: $table.adminComment,
+  ColumnOrderings<String> get admincomment => $composableBuilder(
+      column: $table.admincomment,
       builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<bool> get synced => $composableBuilder(
+      column: $table.synced, builder: (column) => ColumnOrderings(column));
 }
 
 class $$JobCardsTableAnnotationComposer
@@ -548,14 +595,14 @@ class $$JobCardsTableAnnotationComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  GeneratedColumn<int> get id =>
-      $composableBuilder(column: $table.id, builder: (column) => column);
+  GeneratedColumn<int> get jobid =>
+      $composableBuilder(column: $table.jobid, builder: (column) => column);
 
   GeneratedColumn<String> get title =>
       $composableBuilder(column: $table.title, builder: (column) => column);
 
-  GeneratedColumn<String> get clientName => $composableBuilder(
-      column: $table.clientName, builder: (column) => column);
+  GeneratedColumn<String> get clientname => $composableBuilder(
+      column: $table.clientname, builder: (column) => column);
 
   GeneratedColumn<String> get description => $composableBuilder(
       column: $table.description, builder: (column) => column);
@@ -563,14 +610,17 @@ class $$JobCardsTableAnnotationComposer
   GeneratedColumn<String> get technician => $composableBuilder(
       column: $table.technician, builder: (column) => column);
 
-  GeneratedColumn<DateTime> get estimatedDate => $composableBuilder(
-      column: $table.estimatedDate, builder: (column) => column);
+  GeneratedColumn<DateTime> get estimateddate => $composableBuilder(
+      column: $table.estimateddate, builder: (column) => column);
 
   GeneratedColumn<String> get status =>
       $composableBuilder(column: $table.status, builder: (column) => column);
 
-  GeneratedColumn<String> get adminComment => $composableBuilder(
-      column: $table.adminComment, builder: (column) => column);
+  GeneratedColumn<String> get admincomment => $composableBuilder(
+      column: $table.admincomment, builder: (column) => column);
+
+  GeneratedColumn<bool> get synced =>
+      $composableBuilder(column: $table.synced, builder: (column) => column);
 }
 
 class $$JobCardsTableTableManager extends RootTableManager<
@@ -596,44 +646,48 @@ class $$JobCardsTableTableManager extends RootTableManager<
           createComputedFieldComposer: () =>
               $$JobCardsTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback: ({
-            Value<int> id = const Value.absent(),
+            Value<int> jobid = const Value.absent(),
             Value<String> title = const Value.absent(),
-            Value<String> clientName = const Value.absent(),
+            Value<String> clientname = const Value.absent(),
             Value<String> description = const Value.absent(),
             Value<String> technician = const Value.absent(),
-            Value<DateTime> estimatedDate = const Value.absent(),
+            Value<DateTime> estimateddate = const Value.absent(),
             Value<String> status = const Value.absent(),
-            Value<String?> adminComment = const Value.absent(),
+            Value<String?> admincomment = const Value.absent(),
+            Value<bool> synced = const Value.absent(),
           }) =>
               JobCardsCompanion(
-            id: id,
+            jobid: jobid,
             title: title,
-            clientName: clientName,
+            clientname: clientname,
             description: description,
             technician: technician,
-            estimatedDate: estimatedDate,
+            estimateddate: estimateddate,
             status: status,
-            adminComment: adminComment,
+            admincomment: admincomment,
+            synced: synced,
           ),
           createCompanionCallback: ({
-            Value<int> id = const Value.absent(),
+            Value<int> jobid = const Value.absent(),
             required String title,
-            required String clientName,
+            required String clientname,
             required String description,
             required String technician,
-            required DateTime estimatedDate,
+            required DateTime estimateddate,
             Value<String> status = const Value.absent(),
-            Value<String?> adminComment = const Value.absent(),
+            Value<String?> admincomment = const Value.absent(),
+            Value<bool> synced = const Value.absent(),
           }) =>
               JobCardsCompanion.insert(
-            id: id,
+            jobid: jobid,
             title: title,
-            clientName: clientName,
+            clientname: clientname,
             description: description,
             technician: technician,
-            estimatedDate: estimatedDate,
+            estimateddate: estimateddate,
             status: status,
-            adminComment: adminComment,
+            admincomment: admincomment,
+            synced: synced,
           ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))

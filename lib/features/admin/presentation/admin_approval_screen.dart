@@ -45,7 +45,7 @@ class _AdminApprovalScreenState extends State<AdminApprovalScreen> {
     );
 
     if (result != null) {
-      await _db.updateStatus(card.id, status, result);
+      await _db.updateStatus(card.jobid, status, result);
       setState(() => _loadJobCards());
     }
   }
@@ -105,7 +105,7 @@ class _AdminApprovalScreenState extends State<AdminApprovalScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 4),
-            Text('Client: ${card.clientName}'),
+            Text('Client: ${card.clientname}'),
             Text('Technician: ${card.technician}'),
             const SizedBox(height: 4),
             Row(
@@ -121,10 +121,10 @@ class _AdminApprovalScreenState extends State<AdminApprovalScreen> {
                 ),
               ],
             ),
-            if (card.adminComment != null && card.adminComment!.isNotEmpty)
+            if (card.admincomment != null && card.admincomment!.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.only(top: 4),
-                child: Text('Comment: ${card.adminComment}'),
+                child: Text('Comment: ${card.admincomment}'),
               ),
           ],
         ),
