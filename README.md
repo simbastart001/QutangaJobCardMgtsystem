@@ -1,6 +1,8 @@
 # Qutanga Job Card Management System
 
-A cross-platform mobile app built with **Flutter** to streamline job card management, task tracking, stock management, and reporting for workshop and service-based businesses. The backend is powered by **Laravel**, with **MySQL** as the primary database.
+A cross-platform mobile app built with **Flutter** to streamline job card management, task tracking,
+stock management, and reporting for workshop and service-based businesses. The backend is powered by
+**Laravel**, with **MySQL** as the primary database.
 
 ## ✨ Features
 
@@ -17,6 +19,7 @@ A cross-platform mobile app built with **Flutter** to streamline job card manage
 ## 🛠️ Tech Stack
 
 ### Frontend (Mobile)
+
 - **Flutter 3.x**
 - **Riverpod** for state management
 - **Drift + SQLite** for local offline storage
@@ -25,6 +28,7 @@ A cross-platform mobile app built with **Flutter** to streamline job card manage
 - **Animated splash screen** and charts with `pie_chart`
 
 ### Backend
+
 - **Laravel 10+**
 - **MySQL** database
 - **RESTful API**
@@ -92,11 +96,11 @@ A cross-platform mobile app built with **Flutter** to streamline job card manage
 
 5. **API Routes**
    Add API endpoints in `routes/api.php` for:
-   - Job Cards
-   - Customers
-   - Products
-   - Reports
-   - User login/register (optional)
+    - Job Cards
+    - Customers
+    - Products
+    - Reports
+    - User login/register (optional)
 
 ---
 
@@ -123,16 +127,16 @@ lib/
 
 ## 📦 Important Packages Used
 
-| Package               | Purpose                                 |
-|-----------------------|-----------------------------------------|
-| flutter_riverpod      | State management                        |
-| drift                 | Local database (SQLite ORM)             |
-| sqlite3_flutter_libs  | SQLite support                          |
-| intl                  | Date and currency formatting            |
-| path_provider         | For database file access                |
-| pie_chart             | Visual reports                          |
-| flutter_launcher_icons| App icon generation                     |
-| build_runner & drift_dev| Code generation for database         |
+| Package                  | Purpose                      |
+|--------------------------|------------------------------|
+| flutter_riverpod         | State management             |
+| drift                    | Local database (SQLite ORM)  |
+| sqlite3_flutter_libs     | SQLite support               |
+| intl                     | Date and currency formatting |
+| path_provider            | For database file access     |
+| pie_chart                | Visual reports               |
+| flutter_launcher_icons   | App icon generation          |
+| build_runner & drift_dev | Code generation for database |
 
 ---
 
@@ -143,6 +147,40 @@ lib/
 - [ ] Push notifications
 - [ ] PDF invoice export
 - [ ] Sync with Firebase when online
+
+---
+
+## 📱 App Screenshots
+
+### 🔐 Welcome Screen
+
+![Welcome Screen](assets/images/welcomescreen.jpg)
+![Welcome Screen](assets/images/welcome.jpg)
+
+### 🔐 Splash Screen
+
+![Splash Screen](assets/images/splashscreen.jpg)
+
+### 🔐 Reports Screen
+
+![Reports Screen](assets/images/reportsscreen.jpg)
+![Reports Screen](assets/images/reports.jpg)
+
+### 🔐 Admin Screen
+
+![Admin Screen](assets/images/adminscreen.jpg)
+
+### 🔐 Create JobCard Screen
+
+![jobCard Screen](assets/images/createcard.jpg)
+
+![JobCard Screen](assets/images/createjob.jpg)
+
+### 🔐 More Screens
+
+![More Screens](assets/images/syncing.jpg)
+![More Screens](assets/images/sync.jpg)
+![More Screens](assets/images/validation.jpg)
 
 ---
 
